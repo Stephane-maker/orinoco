@@ -9,6 +9,7 @@ class GeneralClassAccesoire {
         this.varnish = source.varnish;
         this.lenses = source.lenses;
         this.type = type;
+
     }
     addLinkForGeneralClassAccesoire(divProduits) {
         let eltGeneral = divProduits
@@ -72,31 +73,34 @@ class GeneralClassAccesoire {
         creationBouttonCard.setAttribute("type", "button");
         creationBouttonCard.classList = "btn btn-primary";
         creationBouttonCard.textContent = "Ajouter au panier";
-        creationBouttonCard.setAttribute("data-click", "click-panier");
-        divForContainerClassBody.appendChild(creationBouttonCard);
+        creationBouttonCard.setAttribute("data-id", this._id);
+        creationClassContainerCard.appendChild(creationBouttonCard);
 
         //preparation de l'evenement pour ajouter un article au panier
         creationBouttonCard.addEventListener("click", function() {
+            let c = creationBouttonCard.getAttribute("data-id");
+            console.log(c)
 
-            let b = creationBouttonCard.getAttribute("data-click");
-            if (b == "click-panier") {
-                console.log("encore ok")
-            } else {
-                console.error("err");
-            }
+            return ForCookie(c)
         })
-
-
     }
     addLensesCamera() {
-        return "<p>lenses :" + this.lenses + "</p>";
+        return "<p class=\"cameras\">lenses :" + this.lenses + "</p>";
     }
     addVarnishTable() {
         return "<p>Varnish :" + this.varnish + "</p>";
     }
     addForOurson() {
-        return "<p>colors :" + this.colors + "</p>";
+        return "<p class=\"ourson\">colors :" + this.colors + "</p>";
     }
+}
+
+
+function ForCookie(userNmae) {
+    let a = document.cookie;
+    let empty = ""
+    a = userNmae;
+    console.log(a)
 }
 
 function MakkeDiv(elementRequete) {
@@ -157,15 +161,4 @@ function requete(elementRequete, divIsertion, valeurMin) {
         .catch(function(err) {
             console.log(err)
         })
-}
-
-function envoieDonner() {
-    fetch("http://localhost:3000/api/teddies", {
-        method: "POST",
-        Headers: {
-            "Accept": "application/json",
-            "Content-type": "application/json"
-        },
-        body: JSON.stringify(jsonBody)
-    });
 }

@@ -7,4 +7,5 @@ if (document.readyState) {
     mainSelector.appendChild(MakkeDiv("cameras"));
     mainSelector.appendChild(MakkeDiv("furniture"));
 
+
 }

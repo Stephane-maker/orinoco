@@ -14,15 +14,20 @@ class GeneralClassAccesoire {
     addLinkForGeneralClassAccesoire(divProduits) {
         let eltGeneral = divProduits
         let detail = "";
+        let elementDataName = "";
+
         switch (this.type) {
             case "cameras":
                 detail = this.addLensesCamera();
+                elementDataName = "cameras"
                 break;
             case "furniture":
                 detail = this.addVarnishTable();
+                elementDataName = "furniture";
                 break;
             case "teddies":
                 detail = this.addForOurson();
+                elementDataName = "teddies";
                 break;
             default:
                 break;
@@ -36,7 +41,7 @@ class GeneralClassAccesoire {
 
         //creation image card boostrap
         let creationImageForCard = document.createElement("img");
-        creationImageForCard.setAttribute("src", this.imageUrl);
+        creationImageForCard.setAttribute("src", this.imageUrl)
         creationClassContainerCard.appendChild(creationImageForCard);
 
         //creation container card body
@@ -54,6 +59,7 @@ class GeneralClassAccesoire {
         let descriptionCardBody = document.createElement("p");
         descriptionCardBody.classList = "card-text";
         descriptionCardBody.textContent = "Description :" + this.description;
+
         creationClassContainerCard.appendChild(descriptionCardBody);
 
         //creation du prix du produit
@@ -69,38 +75,41 @@ class GeneralClassAccesoire {
         creationClassContainerCard.appendChild(detailProduit);
 
         //creation du bouton pour la card
+
         let creationBouttonCard = document.createElement("button");
         creationBouttonCard.setAttribute("type", "button");
         creationBouttonCard.classList = "btn btn-primary";
-        creationBouttonCard.textContent = "Ajouter au panier";
+
+        creationBouttonCard.textContent = "Voir le produit";
         creationBouttonCard.setAttribute("data-id", this._id);
+        creationBouttonCard.setAttribute("data-name", elementDataName)
         creationClassContainerCard.appendChild(creationBouttonCard);
-
-        //preparation de l'evenement pour ajouter un article au panier
+        //preparation de l'evenement ajouté au panier 
         creationBouttonCard.addEventListener("click", function() {
-            let c = creationBouttonCard.getAttribute("data-id");
-            console.log(c)
 
-            return ForCookie(c)
+            let focusDataName = creationBouttonCard.getAttribute("data-name");
+            let focusDataId = creationBouttonCard.getAttribute("data-id");
+            setCookie(focusDataName, focusDataId);
+            document.location.href = "produit.html";
         })
     }
     addLensesCamera() {
-        return "<p class=\"cameras\">lenses :" + this.lenses + "</p>";
+        return "<p>lenses :" + this.lenses + "</p>";
     }
     addVarnishTable() {
         return "<p>Varnish :" + this.varnish + "</p>";
     }
     addForOurson() {
-        return "<p class=\"ourson\">colors :" + this.colors + "</p>";
+        return "<p>colors :" + this.colors + "</p>";
     }
 }
 
+function setCookie(type, id) {
+    let x = document.cookie;
+    document.cookie = "type= " + type + ";" + "path=/";
+    document.cookie = "id=" + id + "; " + "path=/";
 
-function ForCookie(userNmae) {
-    let a = document.cookie;
-    let empty = ""
-    a = userNmae;
-    console.log(a)
+    console.log(document.cookie);
 }
 
 function MakkeDiv(elementRequete) {
@@ -139,7 +148,6 @@ function MakkeDiv(elementRequete) {
         }
     })
     divForButton.appendChild(newButton);
-
     return newDiv;
 }
 
@@ -156,6 +164,7 @@ function requete(elementRequete, divIsertion, valeurMin) {
                 const element = value[i];
                 const newGeneralCLass = new GeneralClassAccesoire(element, elementRequete);
                 newGeneralCLass.addLinkForGeneralClassAccesoire(divIsertion);
+
             }
         })
         .catch(function(err) {

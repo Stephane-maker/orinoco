@@ -6,6 +6,6 @@ if (document.readyState) {
     mainSelector.appendChild(MakkeDiv("teddies"));
     mainSelector.appendChild(MakkeDiv("cameras"));
     mainSelector.appendChild(MakkeDiv("furniture"));
-
+    setCookie()
 
 }

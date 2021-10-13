@@ -1,4 +1,5 @@
 function makkeNavBar() {
+
     const createClassForNavBar = document.createElement("div");
 
     let navClass = document.createElement("nav");
@@ -54,6 +55,24 @@ function makkeNavBar() {
     createLinForLi.textContent = "Home";
 
     createPuceForListAPuce.appendChild(createLinForLi);
+
+    let createPuceForPanier = document.createElement("li");
+    createPuceForPanier.classList = "nav-item";
+
+    createListPuce.appendChild(createPuceForPanier);
+
+    let createLinkForPanier = document.createElement("a");
+    createLinkForPanier.classList = "nav-link active";
+    createLinkForPanier.setAttribute("href", "#");
+    createLinkForPanier.textContent = "Panier";
+
+    createPuceForPanier.appendChild(createLinkForPanier);
+
+    let createIconPanier = document.createElement("i");
+    createIconPanier.classList = "fas fa-shopping-basket";
+    createLinkForPanier.appendChild(createIconPanier);
+
+
 
     let createFormForSearchNavBar = document.createElement("form");
     createFormForSearchNavBar.classList = "d-flex";

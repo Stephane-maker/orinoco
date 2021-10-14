@@ -80,7 +80,6 @@ class ProduitAffichage {
         containerNotifProduit.style.right = "1px";
         containerNotifProduit.style.bottom = "0px"
 
-
         focusMainCOntainer.appendChild(containerNotifProduit);
 
         //creation div container notification produit
@@ -132,8 +131,15 @@ class ProduitAffichage {
             creationBtnRetourAccueille.classList = "btn btn-primary";
             creationBtnRetourAccueille.textContent = "Retour a l'accueil";
             creationDivContinerBtnAccueil.appendChild(creationBtnRetourAccueille);
-
             //creation evenement retour a l'accueil
+            fetch("http://localhost:3000/api/teddies/order", {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonBody)
+            });
             creationDivContinerBtnAccueil.addEventListener("click", function() {
                 document.location.href = "index.html";
             })

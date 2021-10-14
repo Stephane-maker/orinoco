@@ -9,17 +9,15 @@ class GeneralClassAccesoire {
         this.varnish = source.varnish;
         this.lenses = source.lenses;
         this.type = type;
-
     }
     addLinkForGeneralClassAccesoire(divProduits) {
         let eltGeneral = divProduits
         let detail = "";
         let elementDataName = "";
-
         switch (this.type) {
             case "cameras":
                 detail = this.addLensesCamera();
-                elementDataName = "cameras"
+                elementDataName = "cameras";
                 break;
             case "furniture":
                 detail = this.addVarnishTable();
@@ -59,7 +57,6 @@ class GeneralClassAccesoire {
         let descriptionCardBody = document.createElement("p");
         descriptionCardBody.classList = "card-text";
         descriptionCardBody.textContent = "Description :" + this.description;
-
         creationClassContainerCard.appendChild(descriptionCardBody);
 
         //creation du prix du produit
@@ -75,7 +72,6 @@ class GeneralClassAccesoire {
         creationClassContainerCard.appendChild(detailProduit);
 
         //creation du bouton pour la card
-
         let creationBouttonCard = document.createElement("button");
         creationBouttonCard.setAttribute("type", "button");
         creationBouttonCard.classList = "btn btn-primary";
@@ -86,7 +82,6 @@ class GeneralClassAccesoire {
         creationClassContainerCard.appendChild(creationBouttonCard);
         //preparation de l'evenement ajouté au panier 
         creationBouttonCard.addEventListener("click", function() {
-
             let focusDataName = creationBouttonCard.getAttribute("data-name");
             let focusDataId = creationBouttonCard.getAttribute("data-id");
             setCookie(focusDataName, focusDataId);
@@ -105,11 +100,10 @@ class GeneralClassAccesoire {
 }
 
 function setCookie(type, id) {
-    let x = document.cookie;
     document.cookie = "type= " + type + ";" + "path=/";
     document.cookie = "id=" + id + "; " + "path=/";
-
-    console.log(document.cookie);
+    let x = [document.cookie];
+    console.log(x)
 }
 
 function MakkeDiv(elementRequete) {

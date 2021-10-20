@@ -75,17 +75,14 @@ class GeneralClassAccesoire {
         let creationBouttonCard = document.createElement("button");
         creationBouttonCard.setAttribute("type", "button");
         creationBouttonCard.classList = "btn btn-primary";
-
         creationBouttonCard.textContent = "Voir le produit";
         creationBouttonCard.setAttribute("data-id", this._id);
         creationBouttonCard.setAttribute("data-name", elementDataName)
         creationClassContainerCard.appendChild(creationBouttonCard);
         //preparation de l'evenement ajouté au panier 
-        creationBouttonCard.addEventListener("click", function() {
-            let focusDataName = creationBouttonCard.getAttribute("data-name");
-            let focusDataId = creationBouttonCard.getAttribute("data-id");
-            setCookie(focusDataName, focusDataId);
-            document.location.href = "produit.html";
+        creationBouttonCard.addEventListener("click", function(e) {
+            parent.location.hash = "name=#" + e.target.getAttribute("data-name") + "#" + "id=#" + e.target.getAttribute("data-id");
+            document.location.href = "produit.html" + parent.location.hash;
         })
     }
     addLensesCamera() {
@@ -97,13 +94,6 @@ class GeneralClassAccesoire {
     addForOurson() {
         return "<p>colors :" + this.colors + "</p>";
     }
-}
-
-function setCookie(type, id) {
-    document.cookie = "type= " + type + ";" + "path=/";
-    document.cookie = "id=" + id + "; " + "path=/";
-    let x = [document.cookie];
-    console.log(x)
 }
 
 function MakkeDiv(elementRequete) {
@@ -158,7 +148,6 @@ function requete(elementRequete, divIsertion, valeurMin) {
                 const element = value[i];
                 const newGeneralCLass = new GeneralClassAccesoire(element, elementRequete);
                 newGeneralCLass.addLinkForGeneralClassAccesoire(divIsertion);
-
             }
         })
         .catch(function(err) {

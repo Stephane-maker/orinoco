@@ -1,7 +1,6 @@
-console.log(document.cookie)
+let panier = [];
+let produit = [];
 
-function e() {
-    let y = document.getElementById("main");
-    y.innerHTML = y.innerHTML + document.cookie
+function SeekInPanier() {
+    console.log(document.cookie)
 }
-e()

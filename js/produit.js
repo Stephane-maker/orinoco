@@ -82,69 +82,19 @@ class ProduitAffichage {
 
         focusMainCOntainer.appendChild(containerNotifProduit);
 
-        //creation div container notification produit
-        let containerBodyNotification = document.createElement("div");
-        containerBodyNotification.classList = "toast-header";
-        containerNotifProduit.style.width = "20rem";
-
-        containerNotifProduit.appendChild(containerBodyNotification);
-
-        //creation img notif produit
-        let notifImgProduit = document.createElement("img");
-        notifImgProduit.setAttribute("src", this.imageUrl);
-        notifImgProduit.setAttribute("alt", "...");
-        notifImgProduit.classList = "rounded mr-2";
-        notifImgProduit.style.width = "10rem";
-
-        containerBodyNotification.appendChild(notifImgProduit);
-
-        //creation du nom du produit poru la notification
-        let nomNotifProduit = document.createElement("strong");
-        nomNotifProduit.classList = "mr-auto";
-        nomNotifProduit.textContent = this.name;
-        containerNotifProduit.appendChild(nomNotifProduit);
-
-        //creation de la description de la notif
-        let descriptionNotifProduit = document.createElement("div");
-        descriptionNotifProduit.classList = "toast-body";
-        descriptionNotifProduit.textContent = "A bien été ajouté au panier";
-        containerNotifProduit.appendChild(descriptionNotifProduit);
 
         //creation du bouton ajouter au panier 
         let bouttonAjouterPanier = document.createElement("button");
         bouttonAjouterPanier.classList = "btn btn-primary";
         bouttonAjouterPanier.textContent = "Ajouter au panier";
+        bouttonAjouterPanier.setAttribute("data-type", this.type);
+        bouttonAjouterPanier.setAttribute("data-id", this._id);
         containerCardBody.appendChild(bouttonAjouterPanier);
 
-        bouttonAjouterPanier.addEventListener("click", function() {
-            containerNotifProduit.classList = "";
-            setTimeout(() => {
-                containerNotifProduit.classList = "toast";
-            }, 4000);
-            focusMainCOntainer
-            //Creation div container btn retour accueil bootstrap
-            let creationDivContinerBtnAccueil = document.createElement("div");
-            creationDivContinerBtnAccueil.classList = "d-grid gap-2 col-6 mx-auto";
-            focusMainCOntainer.appendChild(creationDivContinerBtnAccueil)
-                //creation bouton retour a l'accueil
-            let creationBtnRetourAccueille = document.createElement("button");
-            creationBtnRetourAccueille.classList = "btn btn-primary";
-            creationBtnRetourAccueille.textContent = "Retour a l'accueil";
-            creationDivContinerBtnAccueil.appendChild(creationBtnRetourAccueille);
-            //creation evenement retour a l'accueil
-            fetch("http://localhost:3000/api/teddies/order", {
-                method: "POST",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(jsonBody)
-            });
-            creationDivContinerBtnAccueil.addEventListener("click", function() {
-                document.location.href = "index.html";
-            })
-            console.log(document.cookie)
-            return sessionStorage.setItem("session", JSON.stringify(document.cookie))
+        bouttonAjouterPanier.addEventListener("click", function(e) {
+            console.log(e.target);
+            console.log(e.target.getAttribute('data-type'));
+            AddProduitToPanier(e.target.getAttribute('data-type'), e.target.getAttribute('data-id'))
         })
 
     }
@@ -159,14 +109,12 @@ class ProduitAffichage {
     }
 }
 
-
-function SeekCookie() {
-    let array = document.cookie;
-    //variable pour extraire le type et l'id du produit selectionne 
-    let resultatType = array.substring(5, array.indexOf(";"));
-    let resultatId = array.substring(array.lastIndexOf("=") + 1);
-    //requetepour affiche le produit selectionné 
-    fetch("http://localhost:3000/api/" + resultatType + "/" + resultatId)
+function SeekUrl() {
+    let seekInUrl = location.href.split('#');
+    let resultatName = seekInUrl[2];
+    let resultatId = seekInUrl[4]
+        // requetepour affiche le produit selectionné
+    fetch("http://localhost:3000/api/" + resultatName + "/" + resultatId)
         .then(function(res) {
             if (res.ok) {
                 return res.json();
@@ -175,13 +123,19 @@ function SeekCookie() {
         .then(function(value) {
             for (let i = 0; i < 1; i++) {
                 let arrayForRequeteProduit = value;
-                const newGeneralCLass = new ProduitAffichage(arrayForRequeteProduit, resultatType);
+                const newGeneralCLass = new ProduitAffichage(arrayForRequeteProduit, resultatName);
                 newGeneralCLass.addProduitSelectionner("main");
             }
         })
         .catch(function(err) {
             console.log(err)
         })
-    let resultatCookie = { resultatType, resultatId };
-    return resultatCookie
+}
+
+function AddProduitToPanier(typePRoduit, dataId) {
+
+    panier.push({ "type": typePRoduit, "id": dataId })
+    console.log(panier);
+
+    document.cookie = "panier= " + JSON.stringify(panier) + ";" + "path=/";
 }

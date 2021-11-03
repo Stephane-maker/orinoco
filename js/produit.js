@@ -1,3 +1,4 @@
+let chiffre = 1
 class ProduitAffichage {
     constructor(source, type) {
         this.colors = source.colors;
@@ -78,10 +79,20 @@ class ProduitAffichage {
         containerNotifProduit.setAttribute("aria-atomic", "true");
         containerNotifProduit.style.position = "absolute";
         containerNotifProduit.style.right = "1px";
-        containerNotifProduit.style.bottom = "0px"
+        containerNotifProduit.style.bottom = "0px";
+        //creation de la div mere quantité produit
+        let divMereQuantitéProduit = document.createElement("div");
+        containerCardBody.appendChild(divMereQuantitéProduit)
+            //creation de la quantité du produit
+        let inputQuantiteProduit = document.createElement("input");
+        inputQuantiteProduit.setAttribute("type", "number");
+        inputQuantiteProduit.id = "quantité"
+        inputQuantiteProduit.setAttribute("min", 1);
+        inputQuantiteProduit.setAttribute("max", "");
+        inputQuantiteProduit.setAttribute("placeholder", "quantité max :10");
+        divMereQuantitéProduit.appendChild(inputQuantiteProduit)
 
         focusMainCOntainer.appendChild(containerNotifProduit);
-
 
         //creation du bouton ajouter au panier 
         let bouttonAjouterPanier = document.createElement("button");
@@ -90,13 +101,10 @@ class ProduitAffichage {
         bouttonAjouterPanier.setAttribute("data-type", this.type);
         bouttonAjouterPanier.setAttribute("data-id", this._id);
         containerCardBody.appendChild(bouttonAjouterPanier);
-
         bouttonAjouterPanier.addEventListener("click", function(e) {
-            console.log(e.target);
-            console.log(e.target.getAttribute('data-type'));
-            AddProduitToPanier(e.target.getAttribute('data-type'), e.target.getAttribute('data-id'))
+            let z = document.getElementById("quantité");
+            AddProduitToPanier(e.target.getAttribute('data-type'), e.target.getAttribute('data-id'), z.value)
         })
-
     }
     addLensesCameraProduit() {
         return "<p>lenses :" + this.lenses + "</p>";
@@ -110,11 +118,12 @@ class ProduitAffichage {
 }
 
 function SeekUrl() {
-    let seekInUrl = location.href.split('#');
-    let resultatName = seekInUrl[2];
-    let resultatId = seekInUrl[4]
-        // requetepour affiche le produit selectionné
-    fetch("http://localhost:3000/api/" + resultatName + "/" + resultatId)
+    let seekInUrl = window.location.hash.substr(1);
+    let resultatId = seekInUrl.split("=");
+    let resultatName = resultatId[1].split("&")
+
+    // requetepour affiche le produit selectionné
+    fetch("http://localhost:3000/api/" + resultatName[0] + "/" + resultatId[2])
         .then(function(res) {
             if (res.ok) {
                 return res.json();
@@ -123,7 +132,7 @@ function SeekUrl() {
         .then(function(value) {
             for (let i = 0; i < 1; i++) {
                 let arrayForRequeteProduit = value;
-                const newGeneralCLass = new ProduitAffichage(arrayForRequeteProduit, resultatName);
+                const newGeneralCLass = new ProduitAffichage(arrayForRequeteProduit, resultatName[0]);
                 newGeneralCLass.addProduitSelectionner("main");
             }
         })
@@ -132,10 +141,23 @@ function SeekUrl() {
         })
 }
 
-function AddProduitToPanier(typePRoduit, dataId) {
+function AddProduitToPanier(dataName, dataID, quantite) {
+    let onARienTrouver = true;
+    if (quantite != 0 && quantite != "" && quantite < 10) {
+        console.log(panier)
+        quantite = parseInt(quantite)
+        for (let i = 0; i < panier.length; i++) {
+            let element = panier[i];
+            console.log(element["id"], element["name"])
+            if (dataID === element["id"] && dataName === element["name"]) {
+                element["quantite"] = element["quantite"] + quantite;
+                onARienTrouver = false;
+            }
+        }
+        if (onARienTrouver) {
+            panier.push({ "name": dataName, "id": dataID, "quantite": quantite });
 
-    panier.push({ "type": typePRoduit, "id": dataId })
-    console.log(panier);
-
-    document.cookie = "panier= " + JSON.stringify(panier) + ";" + "path=/";
+        }
+        document.cookie = "panier=" + JSON.stringify(panier) + "; path=/";
+    }
 }

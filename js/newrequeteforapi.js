@@ -75,13 +75,14 @@ class GeneralClassAccesoire {
         let creationBouttonCard = document.createElement("button");
         creationBouttonCard.setAttribute("type", "button");
         creationBouttonCard.classList = "btn btn-primary";
+
         creationBouttonCard.textContent = "Voir le produit";
         creationBouttonCard.setAttribute("data-id", this._id);
         creationBouttonCard.setAttribute("data-name", elementDataName)
         creationClassContainerCard.appendChild(creationBouttonCard);
         //preparation de l'evenement ajouté au panier 
         creationBouttonCard.addEventListener("click", function(e) {
-            parent.location.hash = "name=#" + e.target.getAttribute("data-name") + "#" + "id=#" + e.target.getAttribute("data-id");
+            parent.location.hash = "name=" + e.target.getAttribute("data-name") + "&" + "id=" + e.target.getAttribute("data-id");
             document.location.href = "produit.html" + parent.location.hash;
         })
     }
@@ -95,6 +96,7 @@ class GeneralClassAccesoire {
         return "<p>colors :" + this.colors + "</p>";
     }
 }
+
 
 function MakkeDiv(elementRequete) {
     //creation de la div mere des produits

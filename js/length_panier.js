@@ -1,6 +1,8 @@
 let panier = [];
 let cookie = getCookie("panier");
-panier = JSON.parse(cookie);
+if (cookie != null) {
+    panier = JSON.parse(cookie);
+}
 
 function getCookie(name) {
     var re = new RegExp("panier" + "=([^;]+)");

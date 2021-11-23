@@ -15,6 +15,7 @@ function SeekUrl() {
                 let arrayForRequeteProduit = value;
                 const newGeneralCLass = new GeneralClassAccesoire(arrayForRequeteProduit, resultatName[0]);
                 newGeneralCLass.selectionProduit("main");
+
             }
         })
         .catch(function(err) {
@@ -22,10 +23,9 @@ function SeekUrl() {
         })
 }
 
-function AddProduitToPanier(dataName, dataID, quantite, prix) {
+function AddProduitToPanier(dataName, dataID, quantite) {
     let onARienTrouver = true;
     if (quantite != 0 && quantite != "" && quantite < 10) {
-        console.log(panier)
         quantite = parseInt(quantite)
         for (let i = 0; i < panier.length; i++) {
             let element = panier[i];
@@ -36,7 +36,7 @@ function AddProduitToPanier(dataName, dataID, quantite, prix) {
             }
         }
         if (onARienTrouver) {
-            panier.push({ "name": dataName, "id": dataID, "quantite": quantite, "prix": prix });
+            panier.push({ "name": dataName, "id": dataID, "quantite": quantite });
         }
         document.cookie = "panier=" + JSON.stringify(panier) + "; path=/";
     }

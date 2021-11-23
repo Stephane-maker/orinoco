@@ -86,7 +86,6 @@ class GeneralClassAccesoire {
             document.location.href = "produit.html" + parent.location.hash;
         })
     }
-
     selectionProduit() {
         let detail = "";
         let elementDataName = "";
@@ -106,7 +105,6 @@ class GeneralClassAccesoire {
             default:
                 break;
         }
-
         let focusMainCOntainer = document.getElementById("main");
 
         //creation de la div container de la card produit
@@ -143,7 +141,7 @@ class GeneralClassAccesoire {
         let prixProduit = document.createElement("p");
         prixProduit.classList = "card-text";
         prixProduit.textContent = "prix " + this.price;
-        prixProduit.setAttribute("data-prix", this.price)
+
         containerCardBody.appendChild(prixProduit);
 
         //creation du detail du produit
@@ -183,15 +181,11 @@ class GeneralClassAccesoire {
         bouttonAjouterPanier.setAttribute("data-id", this._id);
         containerCardBody.appendChild(bouttonAjouterPanier);
         bouttonAjouterPanier.addEventListener("click", function(e) {
-            let z = document.getElementById("quantité");
-
-            AddProduitToPanier(e.target.getAttribute('data-type'), e.target.getAttribute('data-id'), z.value, prixProduit.getAttribute("data-prix"))
-
+            let elementQuantite = document.getElementById("quantité");
+            AddProduitToPanier(e.target.getAttribute('data-type'), e.target.getAttribute('data-id'), elementQuantite.value)
         })
-
     }
-
-    MakkeLineForPanier() {
+    MakkeLineForPanier(quantite) {
         let detail = "";
         let elementDataName = "";
         switch (this.type) {
@@ -210,13 +204,12 @@ class GeneralClassAccesoire {
             default:
                 break;
         }
-        let focusMainCOntainer = document.getElementById("main");
 
         // creation de la card produit panier
         let divMereCardPanier = document.createElement("div");
         divMereCardPanier.classList = "card mb-3"
         divMereCardPanier.style.maxWidth = "50%";
-        focusMainCOntainer.appendChild(divMereCardPanier);
+
         //creation du row bootstrap pour la card
         let divRowCardProduit = document.createElement("div");
         divRowCardProduit.classList = "row g-0";
@@ -268,9 +261,16 @@ class GeneralClassAccesoire {
         //prix du produit avec quantité 
         let prixTotalDuProduit = document.createElement("div");
         prixTotalDuProduit.classList = "card-text";
+        prixTotalDuProduit.innerHTML = "prix total : " + this.price * quantite;
         cardBodyProduitPanier.appendChild(prixTotalDuProduit);
 
-        return FunctionQuantiteProduit(quantiteProduit, prixTotalDuProduit)
+        return divMereCardPanier;
+    }
+    static AffichagePrixTotal(prixTotal) {
+        let prixTotalDuProduit = document.createElement("div");
+        prixTotalDuProduit.classList = "card-text";
+        prixTotalDuProduit.innerHTML = "prix total du panier : " + prixTotal + "€";
+        return prixTotalDuProduit
     }
 
     addLensesCamera() {
@@ -282,116 +282,4 @@ class GeneralClassAccesoire {
     addForOurson() {
         return "<p>colors :" + this.colors + "</p>";
     }
-}
-
-
-
-function FunctionQuantiteProduit(b, c) {
-    let o = "";
-    for (let i = 0; i < panier.length; i++) {
-        const element = panier[i];
-        b.innerHTML = "quantité" + " : " + "x" + element["quantite"];
-        parseInt(element["quantite"]);
-        parseInt(element["prix"]);
-        o = element["quantite"] * element["prix"];
-        console.log(o);
-        c.textContent = "Prix total du produit : " + o + " $";
-    }
-}
-
-console.log(panier)
-
-
-//creation de la nav bar bootstrap 
-function makkeNavBar() {
-    const createClassForNavBar = document.createElement("div");
-
-    let navClass = document.createElement("nav");
-    navClass.classList = "navbar navbar-expand-lg navbar-light bg-light";
-
-    createClassForNavBar.appendChild(navClass);
-
-    let createElementFluidNavBarContainer = document.createElement("div");
-    navClass.appendChild(createElementFluidNavBarContainer);
-    createElementFluidNavBarContainer.classList = "container-fluid";
-
-    let createLinkTitleForNavBar = document.createElement("a");
-    createLinkTitleForNavBar.textContent = "Orinoco";
-    createLinkTitleForNavBar.classList = "navbar-brand";
-    createLinkTitleForNavBar.setAttribute("href", "#");
-    createElementFluidNavBarContainer.appendChild(createLinkTitleForNavBar);
-
-    //button bootstrap for responsive 
-    let createButtonBootstrapForResponsive = document.createElement("button");
-    createButtonBootstrapForResponsive.classList = "navbar-toggler";
-    createButtonBootstrapForResponsive.setAttribute("data-bs-toggle", "collapse");
-    createButtonBootstrapForResponsive.setAttribute("data-bs-target", "#navbarTogglerDemo02");
-    createButtonBootstrapForResponsive.setAttribute("aria-controls", "navbarTogglerDemo02");
-    createButtonBootstrapForResponsive.setAttribute("aria-expanded", false);
-    createButtonBootstrapForResponsive.setAttribute("aria-label", "Toggle navigation")
-    createButtonBootstrapForResponsive.type = "button";
-
-    createElementFluidNavBarContainer.appendChild(createButtonBootstrapForResponsive);
-
-    let createSpanForResponsiveMod = document.createElement("span");
-    createSpanForResponsiveMod.classList = "navbar-toggler-icon";
-    createButtonBootstrapForResponsive.appendChild(createSpanForResponsiveMod);
-
-    //create div for liste puce containe navBar 
-    let createDivForListePuce = document.createElement("div");
-    createDivForListePuce.classList = "collapse navbar-collapse";
-    createDivForListePuce.id = "navbarTogglerDemo02";
-
-    createElementFluidNavBarContainer.appendChild(createDivForListePuce);
-
-    let createListPuce = document.createElement("ul");
-    createListPuce.classList = "navbar-nav me-auto mb-2 mb-lg-0";
-    createDivForListePuce.appendChild(createListPuce);
-
-    let createPuceForListAPuce = document.createElement("li");
-    createPuceForListAPuce.classList = "nav-item";
-
-    createListPuce.appendChild(createPuceForListAPuce);
-
-    let createLinForLi = document.createElement("a");
-    createLinForLi.classList = "nav-link active";
-    createLinForLi.setAttribute("href", "#");
-    createLinForLi.textContent = "Home";
-
-    createPuceForListAPuce.appendChild(createLinForLi);
-
-    let createPuceForPanier = document.createElement("li");
-    createPuceForPanier.classList = "nav-item";
-
-    createListPuce.appendChild(createPuceForPanier);
-
-    let createLinkForPanier = document.createElement("a");
-    createLinkForPanier.classList = "nav-link active";
-    createLinkForPanier.setAttribute("href", "#");
-    createLinkForPanier.textContent = "Panier";
-
-    createPuceForPanier.appendChild(createLinkForPanier);
-
-    let createIconPanier = document.createElement("i");
-    createIconPanier.classList = "fas fa-shopping-basket";
-    createLinkForPanier.appendChild(createIconPanier);
-
-
-
-    let createFormForSearchNavBar = document.createElement("form");
-    createFormForSearchNavBar.classList = "d-flex";
-    createDivForListePuce.appendChild(createFormForSearchNavBar);
-
-    let createInputForSearch = document.createElement("input");
-    createInputForSearch.classList = "form-control me-2";
-    createInputForSearch.setAttribute("type", "search")
-    createFormForSearchNavBar.appendChild(createInputForSearch);
-
-    let createButtonForSearch = document.createElement("button");
-    createButtonForSearch.classList = "btn btn-outline-success";
-    createButtonForSearch.setAttribute("type", "submit");
-    createButtonForSearch.textContent = "Recherche";
-    createFormForSearchNavBar.appendChild(createButtonForSearch);
-
-    return createClassForNavBar
 }

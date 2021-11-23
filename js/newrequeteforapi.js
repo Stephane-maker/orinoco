@@ -24,12 +24,15 @@ function MakkeDiv(elementRequete) {
 
     //Creation de l'evenement voir plus voir moin avec le boutton bootstrap
     newButton.addEventListener("click", function() {
+
         let y = newButton.getAttribute("data-click");
         if (y == "first-click") {
             requete(elementRequete, divProduits, 5);
+            newButton.textContent = "Voir moins";
             newButton.setAttribute("data-click", "second-click");
         } else if (y == "second-click") {
             requete(elementRequete, divProduits, 2);
+            newButton.textContent = "Voir plus";
             newButton.setAttribute("data-click", "first-click");
         }
     })

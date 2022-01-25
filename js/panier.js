@@ -1,3 +1,4 @@
+let test = [];
 async function CheckCookie() {
     let focusMain = document.getElementById("main");
     if (cookie === null) {
@@ -156,6 +157,11 @@ async function CheckCookie() {
             buttonConfirmerCommande.classList = "btn btn-primary";
             buttonConfirmerCommande.textContent = "Commander !";
             divClassMereButton.appendChild(buttonConfirmerCommande);
+            buttonConfirmerCommande.addEventListener("click", function() {
+                setTimeout(function() {
+                    document.location = "confirmation_commande.html"
+                }, 1000)
+            })
 
             buttonConfirmerCommande.addEventListener("click", function() {
                 let verificationEmail = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -184,12 +190,21 @@ async function EnvoyeDeDonneFetch(email, city, firstName, lastName, address) {
         let contact = { "email": email, "city": city, "firstName": firstName, "lastName": lastName, "address": address };
         let products = tableauProduit[categorie];
         await fetch("http://localhost:3000/api/" + categorie + "/order", {
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ "contact": contact, "products": products })
-        });
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ "contact": contact, "products": products })
+            })
+            .then(function(res) {
+                if (res.ok) {
+                    return res.json();
+                }
+            })
+            .then(function(value) {
+                console.log(value)
+                document.cookie = "orderId=" + JSON.stringify(value) + "; path=/";
+            });
     }
 }

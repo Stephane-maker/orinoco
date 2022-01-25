@@ -1,4 +1,5 @@
 let panier = [];
+
 let cookie = getCookie("panier");
 if (cookie != null) {
     panier = JSON.parse(cookie);

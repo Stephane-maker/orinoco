@@ -107,11 +107,15 @@ class GeneralClassAccesoire {
         }
         let focusMainCOntainer = document.getElementById("main");
 
+        let divStyleProduit = document.createElement("div");
+        divStyleProduit.classList = "container_produits";
+        focusMainCOntainer.appendChild(divStyleProduit);
+
         //creation de la div container de la card produit
         let divMereProduit = document.createElement("div");
         divMereProduit.classList = "card";
         divMereProduit.style.width = "32rem";
-        focusMainCOntainer.appendChild(divMereProduit);
+        divStyleProduit.appendChild(divMereProduit);
 
         //creation de l'image du produit
         let imgProduit = document.createElement("img");
@@ -205,10 +209,14 @@ class GeneralClassAccesoire {
                 break;
         }
 
+        let divForStyleProduit = document.createElement("div");
+        divForStyleProduit.classList = "container_produits";
+
         // creation de la card produit panier
         let divMereCardPanier = document.createElement("div");
         divMereCardPanier.classList = "card mb-3"
         divMereCardPanier.style.maxWidth = "50%";
+        divForStyleProduit.appendChild(divMereCardPanier);
 
         //creation du row bootstrap pour la card
         let divRowCardProduit = document.createElement("div");
@@ -253,9 +261,10 @@ class GeneralClassAccesoire {
         personalisationProduit.innerHTML = detail;
         cardBodyProduitPanier.appendChild(personalisationProduit);
         //creation quantite produit
-        let quantiteProduit = document.createElement("div");
-        quantiteProduit.classList = "card-text";
 
+        let quantiteProduit = document.createElement("div");
+        quantiteProduit.innerHTML = "Nombre de produit : " + quantite;
+        quantiteProduit.classList = "card-text"
         cardBodyProduitPanier.appendChild(quantiteProduit);
 
         //prix du produit avec quantité 
@@ -264,11 +273,11 @@ class GeneralClassAccesoire {
         prixTotalDuProduit.innerHTML = "prix total : " + this.price * quantite;
         cardBodyProduitPanier.appendChild(prixTotalDuProduit);
 
-        return divMereCardPanier;
+        return divForStyleProduit;
     }
     static AffichagePrixTotal(prixTotal) {
         let prixTotalDuProduit = document.createElement("div");
-        prixTotalDuProduit.classList = "card-text";
+        prixTotalDuProduit.classList = "card-text container_produits";
         prixTotalDuProduit.innerHTML = "prix total du panier : " + prixTotal + "€";
         return prixTotalDuProduit
     }

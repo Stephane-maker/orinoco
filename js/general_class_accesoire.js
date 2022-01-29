@@ -68,7 +68,7 @@ class GeneralClassAccesoire {
         //creation du detail des produits
         let detailProduit = document.createElement("p");
         detailProduit.classList = "card-text";
-        detailProduit.innerHTML = detailProduit.innerHTML + detail;
+        detailProduit.textContent = "disponible en : " + detail;
         creationClassContainerCard.appendChild(detailProduit);
 
         //creation du bouton pour la card
@@ -89,18 +89,22 @@ class GeneralClassAccesoire {
     selectionProduit() {
         let detail = "";
         let elementDataName = "";
+        let nameDetail = "";
         switch (this.type) {
             case "cameras":
                 detail = this.addLensesCamera();
                 elementDataName = "cameras";
+                nameDetail = "lenses";
                 break;
             case "furniture":
                 detail = this.addVarnishTable();
                 elementDataName = "furniture";
+                nameDetail = "Varnish";
                 break;
             case "teddies":
                 detail = this.addForOurson();
                 elementDataName = "teddies";
+                nameDetail = "colors";
                 break;
             default:
                 break;
@@ -144,38 +148,51 @@ class GeneralClassAccesoire {
         //creation du prix du produit
         let prixProduit = document.createElement("p");
         prixProduit.classList = "card-text";
-        prixProduit.textContent = "prix " + this.price;
+        prixProduit.textContent = "prix :" + this.price;
 
         containerCardBody.appendChild(prixProduit);
 
-        //creation du detail du produit
-        let detailProduit = document.createElement("p");
-        detailProduit.classList = "card-text";
-        detailProduit.innerHTML = detail;
-        containerCardBody.appendChild(detailProduit);
+        let test = [];
+        test = detail.split(",");
 
-        //creation de la notification ajouté au panier
-        let containerNotifProduit = document.createElement("div");
-        containerNotifProduit.classList = "toast";
-        containerNotifProduit.setAttribute("role", "alert");
-        containerNotifProduit.setAttribute("aria-live", "assertive");
-        containerNotifProduit.setAttribute("aria-atomic", "true");
-        containerNotifProduit.style.position = "absolute";
-        containerNotifProduit.style.right = "1px";
-        containerNotifProduit.style.bottom = "0px";
-        //creation de la div mere quantité produit
-        let divMereQuantitéProduit = document.createElement("div");
-        containerCardBody.appendChild(divMereQuantitéProduit)
-            //creation de la quantité du produit
-        let inputQuantiteProduit = document.createElement("input");
-        inputQuantiteProduit.setAttribute("type", "number");
-        inputQuantiteProduit.id = "quantité"
-        inputQuantiteProduit.setAttribute("min", 1);
-        inputQuantiteProduit.setAttribute("max", "");
-        inputQuantiteProduit.setAttribute("placeholder", "quantité max :10");
-        divMereQuantitéProduit.appendChild(inputQuantiteProduit)
+        //creation de la personnalisation du produit pour l'user 
+        let divMerePersonalisationProduit = document.createElement("div");
+        containerCardBody.appendChild(divMerePersonalisationProduit);
 
-        focusMainCOntainer.appendChild(containerNotifProduit);
+        let labelPersonnalisationProduit = document.createElement("label");
+        labelPersonnalisationProduit.textContent = nameDetail + " : ";
+        divMerePersonalisationProduit.appendChild(labelPersonnalisationProduit);
+        //Creation du selecteur de personnalisation
+        let selecteurPersonalisation = document.createElement("select");
+        labelPersonnalisationProduit.appendChild(selecteurPersonalisation);
+
+        //boucle For pour les different style de personnalitation du produit
+        for (let i = 0; i < test.length; i++) {
+            const element = test[i];
+            let optionProduitPersonnalitation = document.createElement("option");
+            optionProduitPersonnalitation.textContent = element;
+            selecteurPersonalisation.appendChild(optionProduitPersonnalitation);
+        }
+
+        //creation quantité produit 
+        let divMereQuantiteProduit = document.createElement("div");
+        containerCardBody.appendChild(divMereQuantiteProduit);
+        //creation label quantite produit
+        let labelQuantiteProduit = document.createElement("label");
+        labelQuantiteProduit.textContent = "Quantité : ";
+        divMereQuantiteProduit.appendChild(labelQuantiteProduit);
+        //creation selecteur quantite produit
+        let selecteurQuantiteProduit = document.createElement("select");
+        labelQuantiteProduit.appendChild(selecteurQuantiteProduit);
+        //creation boucle for pour la quantite produit
+
+        for (let i = 1; i < 11; i++) {
+            // creation option pour la quantite du produit
+            let optionQuantiteProduit = document.createElement("option");
+            optionQuantiteProduit.setAttribute("data-quantite", i)
+            optionQuantiteProduit.textContent = i;
+            selecteurQuantiteProduit.appendChild(optionQuantiteProduit)
+        }
 
         //creation du bouton ajouter au panier 
         let bouttonAjouterPanier = document.createElement("button");
@@ -184,9 +201,23 @@ class GeneralClassAccesoire {
         bouttonAjouterPanier.setAttribute("data-type", this.type);
         bouttonAjouterPanier.setAttribute("data-id", this._id);
         containerCardBody.appendChild(bouttonAjouterPanier);
+
         bouttonAjouterPanier.addEventListener("click", function(e) {
-            let elementQuantite = document.getElementById("quantité");
-            AddProduitToPanier(e.target.getAttribute('data-type'), e.target.getAttribute('data-id'), elementQuantite.value)
+            //creation des boutton aller au panier ou voir le panier
+            AddProduitToPanier(e.target.getAttribute('data-type'), e.target.getAttribute('data-id'), selecteurQuantiteProduit.value)
+            divMereQuantiteProduit.remove();
+            bouttonAjouterPanier.remove();
+            let bouttonRetourIndex = document.createElement("a");
+            bouttonRetourIndex.setAttribute("href", "index.html");
+            bouttonRetourIndex.classList = "btn btn-primary";
+            bouttonRetourIndex.textContent = "Retour a l'accueille";
+            containerCardBody.appendChild(bouttonRetourIndex)
+
+            let bouttonVoirPanier = document.createElement("a");
+            bouttonVoirPanier.setAttribute("href", "panier.html");
+            bouttonVoirPanier.classList = "btn btn-primary";
+            bouttonVoirPanier.textContent = "Voir le panier";
+            containerCardBody.appendChild(bouttonVoirPanier)
         })
     }
     MakkeLineForPanier(quantite) {
@@ -208,6 +239,7 @@ class GeneralClassAccesoire {
             default:
                 break;
         }
+
 
         let divForStyleProduit = document.createElement("div");
         divForStyleProduit.classList = "container_produits";
@@ -283,12 +315,12 @@ class GeneralClassAccesoire {
     }
 
     addLensesCamera() {
-        return "<p>lenses :" + this.lenses + "</p>";
+        return "" + this.lenses + "";
     }
     addVarnishTable() {
-        return "<p>Varnish :" + this.varnish + "</p>";
+        return "" + this.varnish + "";
     }
     addForOurson() {
-        return "<p>colors :" + this.colors + "</p>";
+        return "" + this.colors;
     }
 }

@@ -1,4 +1,4 @@
-let test = [];
+let prixTotalCommande = 0
 async function CheckCookie() {
     let focusMain = document.getElementById("main");
     if (cookie === null) {
@@ -30,6 +30,9 @@ async function CheckCookie() {
         buttonRetourPageAccueille.classList = "btn btn-primary";
         buttonRetourPageAccueille.textContent = "Page d'accueille";
         cardBodyPanierVide.appendChild(buttonRetourPageAccueille);
+        buttonRetourPageAccueille.addEventListener("click", function() {
+            document.location.href = "index.html";
+        })
     } else {
         let prixTotal = 0;
         for (let i = 0; i < panier.length; i++) {
@@ -51,6 +54,7 @@ async function CheckCookie() {
                 })
 
         }
+        prixTotalCommande = prixTotal;
         focusMain.appendChild(GeneralClassAccesoire.AffichagePrixTotal(prixTotal));
         //creation du boutton commander
 
@@ -169,7 +173,7 @@ async function CheckCookie() {
                     EnvoyeDeDonneFetch(inputEmailUser.value, inputForCityUser.value, inputForFirstNameUser.value, inputForLastNameUser.value, inputForAddresseUser.value)
 
                 } else {
-                    console.log("non")
+                    return false
                 }
             })
         })
@@ -180,7 +184,6 @@ async function EnvoyeDeDonneFetch(email, city, firstName, lastName, address) {
     let tableauProduit = [];
     for (let i = 0; i < panier.length; i++) {
         const element = panier[i];
-        console.log(element["id"]);
         if (!tableauProduit.hasOwnProperty(element["name"])) {
             tableauProduit[element["name"]] = [];
         }
@@ -203,8 +206,8 @@ async function EnvoyeDeDonneFetch(email, city, firstName, lastName, address) {
                 }
             })
             .then(function(value) {
-                console.log(value)
                 document.cookie = "orderId=" + JSON.stringify(value) + "; path=/";
+                document.cookie = "PrixTotal=" + JSON.stringify(prixTotalCommande) + "; path=/";
             });
     }
 }

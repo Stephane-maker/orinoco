@@ -2,7 +2,6 @@ function confirmationCommade() {
     let textOrderId = JSON.parse(orderId);
     let textPrixTotal = JSON.parse(prixTotal)
 
-    console.log(textPrixTotal)
     let mainSelector = document.getElementById("main");
 
     let cardbody = document.createElement("div");

@@ -15,6 +15,9 @@ function makkeNavBar(prix) {
     createLinkTitleForNavBar.classList = "navbar-brand";
     createLinkTitleForNavBar.setAttribute("href", "#");
     createElementFluidNavBarContainer.appendChild(createLinkTitleForNavBar);
+    createLinkTitleForNavBar.addEventListener("click", function() {
+        document.location.href = "index.html";
+    })
 
     //button bootstrap for responsive 
     let createButtonBootstrapForResponsive = document.createElement("button");

@@ -57,7 +57,6 @@ function makkeNavBar(prix) {
     createLinForLi.textContent = "Home";
     //creation de l'evenment retour a la page d'accueille
     createLinForLi.addEventListener("click", function() {
-            console.log("Hello")
             document.location.href = "index.html";
         })
         //condition pour affiche des element de la navBar
@@ -98,7 +97,7 @@ function makkeNavBar(prix) {
 
     let createInputForSearch = document.createElement("input");
     createInputForSearch.classList = "form-control me-2";
-    createInputForSearch.setAttribute("type", "search")
+    createInputForSearch.setAttribute("type", "search");
     createFormForSearchNavBar.appendChild(createInputForSearch);
 
     let createButtonForSearch = document.createElement("button");

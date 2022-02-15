@@ -152,8 +152,9 @@ class GeneralClassAccesoire {
 
         containerCardBody.appendChild(prixProduit);
 
-        let test = [];
-        test = detail.split(",");
+        //push detail produit et coupe a la virgule pour le mettre dans une liste deroulante 
+        let tableauPersonnalisationProduit = [];
+        tableauPersonnalisationProduit = detail.split(",");
 
         //creation de la personnalisation du produit pour l'user 
         let divMerePersonalisationProduit = document.createElement("div");
@@ -167,8 +168,8 @@ class GeneralClassAccesoire {
         labelPersonnalisationProduit.appendChild(selecteurPersonalisation);
 
         //boucle For pour les different style de personnalitation du produit
-        for (let i = 0; i < test.length; i++) {
-            const element = test[i];
+        for (let i = 0; i < tableauPersonnalisationProduit.length; i++) {
+            const element = tableauPersonnalisationProduit[i];
             let optionProduitPersonnalitation = document.createElement("option");
             optionProduitPersonnalitation.textContent = element;
             selecteurPersonalisation.appendChild(optionProduitPersonnalitation);
